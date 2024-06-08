@@ -1,0 +1,55 @@
+update:
+  auto_update: true
+  repositories:
+    - url: "http://example.com/repo1"
+    - url: "http://example.com/repo2"
+
+user:
+  enforce_mfa: true
+
+service:
+  list_services: true
+  disable_services:
+    - "service1"
+    - "service2"
+
+network:
+  configure_firewall: true
+  firewall_rules:
+    - action: "allow"
+      port: 22
+      protocol: "tcp"
+    - action: "deny"
+      port: 23
+      protocol: "tcp"
+
+log:
+  enable_logging: true
+  centralize_logs: true
+  log_server: ""
+
+kernel:
+  harden_kernel: true
+  parameters:
+    - name: "net.ipv4.ip_forward"
+      value: "0"
+    - name: "kernel.randomize_va_space"
+      value: "2"
+
+application:
+  secure_config: true
+
+ids:
+  deploy_tool: true
+  tool_name: "Snort"
+
+backup:
+  schedule_backups: true
+  backup_paths:
+    - "/etc"
+    - "/var"
+  test_recovery: true
+
+audit:
+  run_audit: true
+  audit_tool: "Lynis"
