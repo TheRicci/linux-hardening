@@ -1,8 +1,10 @@
 use std::process::Command;
+use crate::tasks::checking::ensure_service_installed_and_enabled;
 
 pub fn centralize_logs(log_server: Option<&str>) {
     if let Some(server) = log_server {
         if !server.is_empty() {
+            install_log_server();
             println!("Centralizing logs to server: {}", server);
             // Configure rsyslog to send logs to the remote server
             let rsyslog_conf = format!(
@@ -31,32 +33,7 @@ pub fn centralize_logs(log_server: Option<&str>) {
 }
 
 fn install_log_server() {
-    println!("Installing log server...");
-
-    // Install rsyslog
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("apt-get install -y rsyslog")
-        .output()
-        .expect("Failed to install rsyslog");
-    if output.status.success() {
-        println!("rsyslog installed successfully.");
-    } else {
-        eprintln!("Failed to install rsyslog: {}", String::from_utf8_lossy(&output.stderr));
-        return;
-    }
-
-    println!("Enabling logging...");
-    // Enable rsyslog service
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("systemctl enable rsyslog && systemctl start rsyslog")
-        .output()
-        .expect("Failed to enable rsyslog service");
-    if output.status.success() {
-        println!("Logging enabled successfully.");
-    } else {
-        eprintln!("Failed to enable logging: {}", String::from_utf8_lossy(&output.stderr));
+    if !ensure_service_installed_and_enabled("rsyslog", "rsyslog"){
         return
     }
 
