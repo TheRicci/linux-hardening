@@ -1,20 +1,5 @@
 use std::process::Command;
 
-pub fn enable_logging() {
-    println!("Enabling logging...");
-    // Enable rsyslog service
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("systemctl enable rsyslog && systemctl start rsyslog")
-        .output()
-        .expect("Failed to enable rsyslog service");
-    if output.status.success() {
-        println!("Logging enabled successfully.");
-    } else {
-        eprintln!("Failed to enable logging: {}", String::from_utf8_lossy(&output.stderr));
-    }
-}
-
 pub fn centralize_logs(log_server: Option<&str>) {
     if let Some(server) = log_server {
         if !server.is_empty() {
@@ -59,6 +44,20 @@ fn install_log_server() {
     } else {
         eprintln!("Failed to install rsyslog: {}", String::from_utf8_lossy(&output.stderr));
         return;
+    }
+
+    println!("Enabling logging...");
+    // Enable rsyslog service
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg("systemctl enable rsyslog && systemctl start rsyslog")
+        .output()
+        .expect("Failed to enable rsyslog service");
+    if output.status.success() {
+        println!("Logging enabled successfully.");
+    } else {
+        eprintln!("Failed to enable logging: {}", String::from_utf8_lossy(&output.stderr));
+        return
     }
 
     // Configure rsyslog as a log server

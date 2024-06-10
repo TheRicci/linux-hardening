@@ -6,8 +6,11 @@ user:
   enforce_mfa: true
 
 service:
-  list_services: false
+  list_services: true
   disable_services:
+    - "service1"
+    - "service2"
+    - "service3"
 
 network:
   configure_firewall: true
@@ -18,11 +21,17 @@ network:
     - action: "deny"
       port: 23
       protocol: "tcp"
+    - action: "deny"
+      port: 80
+      protocol: "tcp"
+    - action: "deny"
+      port: 443
+      protocol: "tcp"
 
 log:
   enable_logging: true
   centralize_logs: true
-  log_server: ""
+  log_server: "logserver.example.com"
 
 kernel:
   harden_kernel: true
@@ -31,6 +40,8 @@ kernel:
       value: "0"
     - name: "kernel.randomize_va_space"
       value: "2"
+    - name: "net.ipv4.conf.all.rp_filter"
+      value: "1"
 
 application:
   secure_config: true
@@ -44,6 +55,7 @@ backup:
   backup_paths:
     - "/etc"
     - "/var"
+    - "/home"
   test_recovery: true
 
 audit:

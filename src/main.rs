@@ -58,42 +58,30 @@ fn automatic_mode(config: &config::config::Config) {
 
     // Update
     if config.update.auto_update {
-        println!("Updating system...");
-        tasks::update::system_update(&config.update.repositories);
+        tasks::update::system_update(&config.update.update_interval);
     }
 
     // User
     if config.user.enforce_mfa {
-        println!("Enforcing MFA...");
         tasks::user::enforce_mfa();
     }
 
     // Service
     if config.service.list_services {
-        println!("Listing services...");
         tasks::service::list_services();
     }
 
     for service in &config.service.disable_services {
-        println!("Disabling service: {}", service);
         tasks::service::disable_service(service);
     }
 
     // Network
     if config.network.configure_firewall {
-        println!("Configuring firewall...");
         tasks::network::configure_firewall(&config.network.firewall_rules);
     }
 
     // Log
-    if config.log.enable_logging {
-        println!("Enabling logging...");
-        tasks::log::enable_logging();
-    }
-
     if config.log.centralize_logs {
-        let log_server = config.log.log_server.as_deref().unwrap_or("default_log_server_address");
-        println!("Centralizing logs to: {}", log_server);
         tasks::log::centralize_logs(Some(&config.log.log_server.as_ref().unwrap()));
     }
 

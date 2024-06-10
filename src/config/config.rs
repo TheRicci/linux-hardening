@@ -1,3 +1,4 @@
+use clap::builder::Str;
 use serde::Deserialize;
 use std::error::Error;
 use std::fs;
@@ -19,12 +20,7 @@ pub struct Config {
 #[derive(Debug, Deserialize)]
 pub struct UpdateConfig {
     pub auto_update: bool,
-    pub repositories: Vec<Repository>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Repository {
-    pub url: String,
+    pub update_interval: String
 }
 
 #[derive(Debug, Deserialize)]
