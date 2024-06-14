@@ -5,8 +5,8 @@ pub fn configure_firewall(firewall_rules: &[FirewallRule]) {
     println!("Configuring firewall...");
     for rule in firewall_rules {
         let command = match rule.action.as_str() {
-            "allow" => format!("ufw allow {} {}/{}", rule.port, rule.protocol, rule.port),
-            "deny" => format!("ufw deny {} {}/{}", rule.port, rule.protocol, rule.port),
+            "allow" => format!("ufw allow {}/{}", rule.port, rule.protocol),
+            "deny" => format!("ufw deny {}/{}", rule.port, rule.protocol),
             _ => continue,
         };
         let output = Command::new("sh")

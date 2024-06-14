@@ -3,7 +3,7 @@ update:
   update_interval: "daily" # options: daily, weekly, monthly
 
 user:
-  enforce_mfa: true
+  enforce_mfa: false
 
 service:
   list_services: false
@@ -44,7 +44,7 @@ backup:
   backup_paths:
     - "/etc"
     - "/var"
-  test_recovery: true
+  test_recovery: false
 
 audit:
   run_audit: true

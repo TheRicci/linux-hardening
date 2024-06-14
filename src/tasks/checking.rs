@@ -42,7 +42,7 @@ pub fn ensure_service_installed_and_enabled(package: &str, service: &str) -> boo
         // Install the package
         let output = Command::new("sh")
             .arg("-c")
-            .arg(format!("apt-get install -y {}", package))
+            .arg(format!("DEBIAN_FRONTEND=noninteractive apt-get install -y {}", package))
             .output()
             .expect("Failed to install package");
         if output.status.success() {
